@@ -1,28 +1,21 @@
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import { EthProvider } from "./eth.context";
-import "./globals.css";
-
-export const metadata = {
-  title: "SolJobs"
-};
+import React, { Fragment, ReactElement } from "react";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
+import { useEth } from "eth.context";
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
+export default function Layout({ children }: RootLayoutProps): JSX.Element {
+  const eth = useEth()
   return (
-    <html>
-      <body>
-        <EthProvider>
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer />
-        </EthProvider>
-      </body>
-    </html>
+    <Fragment>
+        <Navbar />
+        <main>
+          {React.cloneElement(children as ReactElement, { eth })}
+        </main>
+        <Footer />
+    </Fragment>
   );
 }
